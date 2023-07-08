@@ -9,11 +9,11 @@ import Link from 'next/link';
 
 export default function AboutPage() {
   return (
-    <div className="max-w-xl mx-auto px-4 py-8">
+    <section className="mt-12 mx-auto px-4 max-w-screen-xl md:px-8">
       <PageTitle />
 
-      <div className="grid grid-cols-1">
-        <div className="space-y-4">
+      <div className="grid lg:grid-cols-3 gap-4">
+        <div className="space-y-4 lg:col-span-2 mb-16">
           <p>
             {siteConfig.name} is a groundbreaking educational journey designed exclusively for curious students from the Scottish Highlands. This initiative integrates technology, science, and the deep-seated cultural tapestry of Japan into a comprehensive 10-week immersive program.
           </p>
@@ -35,11 +35,11 @@ export default function AboutPage() {
           </p>
         </div>
 
-        <div className="mt-8">
+        <div className="mt-8 lg:mt-0 mx-8">
           <Card className="bg-primary-dark">
             <CardHeader>
-              <CardTitle>Useful Documents</CardTitle>
-              <CardDescription>Additional resources to help understand the project.</CardDescription>
+              <CardTitle>Useful Links</CardTitle>
+              <CardDescription>Read More or get in touch.</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid w-full items-center gap-4">
@@ -52,10 +52,10 @@ export default function AboutPage() {
                   </Link>
                 </div>
                 <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="name">Another Link</Label>
-                  <Link href="/documents/another.pdf"
+                  <Label htmlFor="name">Contact Us</Label>
+                  <Link href="/contact"
                     className={buttonVariants({ variant: 'outline' })} >
-                    Another Link
+                    Contact Us
                   </Link>
                 </div>
               </div>
@@ -63,6 +63,6 @@ export default function AboutPage() {
           </Card>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

@@ -22,7 +22,7 @@ export const siteConfig = {
       href: "/faq",
     },
     {
-      title: "Blog",
+      title: "News",
       href: "/blog",
     },
     {

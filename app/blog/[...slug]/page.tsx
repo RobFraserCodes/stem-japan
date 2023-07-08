@@ -1,32 +1,60 @@
-// import { client } from '@/lib/sanity';
-// import BlogPostPage from '@/components/blog/BlogPostPage';
+'use client';
 
-// export async function getStaticProps({ params }) {
-//   // Fetch the specific blog post based on the slug
-//   const post = await client.fetch(
-//     `*[_type == "post" && slug.current == $slug][0]`,
-//     { slug: params.slug }
-//   );
+import React, { useState, useEffect } from 'react';
+import { useParams } from "next/navigation";
+import PageTitle from "@/components/page-title";
+import { client } from '@/lib/sanity';
+import Image from 'next/image';
+import BlockContent from '@sanity/block-content-to-react';
 
-//   return {
-//     props: {
-//       post,
-//     },
-//     revalidate: 1, // Revalidate the page after 1 second for incremental static regeneration
-//   };
-// }
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
+const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
 
-// export async function getStaticPaths() {
-//   // Fetch the slugs of all blog posts from Sanity
-//   const slugs = await client.fetch('*[_type == "post"].slug.current');
+export default function BlogPage() {
+    const { slug } = useParams();
+    const [post, setPost] = useState([]);
 
-//   // Generate the paths for the blog post slugs
-//   const paths = slugs.map((slug) => ({ params: { slug: slug.split('/') } }));
+    useEffect(() => {
+        const fetchPost = async () => {
+            const post = await client.fetch(`*[_type == "post" && slug.current == "${slug}"]`);
+            setPost(post);
+        };
 
-//   return {
-//     paths,
-//     fallback: true, // Set fallback to true to generate pages on-demand
-//   };
-// }
+        fetchPost();
+    }, []);
 
-// export default BlogPostPage;
+    return (
+        <section className="mt-12 mx-auto px-4 max-w-screen-xl md:px-8">
+        <PageTitle />
+          <div className="grid lg:grid-cols-3 gap-4">
+            <div className="lg:col-span-2">
+              {post.map((post) => {
+                  const imageUrl = post.mainImage.asset._ref
+                  .replace('image-', '')
+                  .replace('-jpg', '.jpg');
+
+                return (
+                  <div>
+                      <div className="relative w-full h-48 rounded-t-md overflow-hidden">
+                        <Image
+                          src={`https://cdn.sanity.io/images/${projectId}/${dataset}/${imageUrl}`}
+                          alt={post.mainImage.alt}
+                          layout="fill"
+                          objectFit="cover"
+                          loading="lazy"
+                        />
+                      </div>
+                      <div className="pt-3 mb-3 space-y-4">
+                        <BlockContent blocks={post.body} className="space-y-4 pb-16" />
+                      </div>
+                  </div>
+                );
+              })}
+            </div>
+            <div>
+              {/* Put your right column content here */}
+            </div>
+          </div>
+        </section>
+    );
+}
