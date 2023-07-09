@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { client } from '@/lib/sanity';
 import PageTitle from '@/components/page-title';
 import Image from 'next/image';
+import NewsletterSignup from '@/components/newsletter-signup';
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
@@ -21,6 +22,7 @@ export default function BlogPage() {
   }, []);
 
   return (
+    <>
     <section className="mt-12 mx-auto px-4 max-w-screen-xl md:px-8">
       <PageTitle />
       <h4>Stay up to date with the latest news.</h4>
@@ -71,5 +73,7 @@ export default function BlogPage() {
         })}
       </div>
     </section>
+    <NewsletterSignup />
+    </>
   );
 }

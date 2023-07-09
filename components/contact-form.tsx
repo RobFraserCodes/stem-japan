@@ -26,36 +26,36 @@ export default function ContactForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
   
-    // Prepare the document data
-    const document = {
-      _type: 'contactForm',
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-      email: formData.email,
-      phoneNumber: formData.phoneNumber,
-      message: formData.message,
-    };
-  
-    // Create the document using the Sanity client
-    client
-      .create(document)
-      .then(() => {
-        // Handle the successful submission
-        alert('Your message has been sent!');
-        setFormData({
-          firstName: '',
-          lastName: '',
-          email: '',
-          phoneNumber: '',
-          message: '',
-        });
+    // Send a POST request to the API route
+    fetch('/api/submitForm', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message === 'Success') {
+          // Handle the successful submission
+          alert('Your message has been sent!');
+          setFormData({
+            firstName: '',
+            lastName: '',
+            email: '',
+            phoneNumber: '',
+            message: '',
+          });
+        } else {
+          // Handle the error
+          alert('An error occurred. Please try again.');
+        }
       })
       .catch((error) => {
         // Handle the error
         console.error('Error submitting the form:', error);
       });
   };
-  
 
   return (
     <div>
