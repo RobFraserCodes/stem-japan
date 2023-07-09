@@ -5,7 +5,6 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Label } from './ui/label';
-import { client } from '@/lib/sanity';
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
