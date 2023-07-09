@@ -10,10 +10,6 @@ export const siteConfig = {
       href: "/",
     },
     {
-      title: "Apply",
-      href: "/apply",
-    },
-    {
       title: "About",
       href: "/about",
     },
@@ -34,5 +30,6 @@ export const siteConfig = {
     twitter: "https://twitter.com/",
     instagram: "https://instagram.com/",
     press: "/press",
+    apply: "/apply",
   },
 }
