@@ -3,8 +3,11 @@
 import React, { useState, useEffect } from 'react';
 import { client } from '@/lib/sanity';
 import PageTitle from '@/components/page-title';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
+import { buttonVariants } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import Link from 'next/link';
+import EditorNotes from '@/components/editor-notes';
 
 export default function PressPage() {
   const [pressReleases, setPressReleases] = useState([]);
@@ -27,24 +30,27 @@ export default function PressPage() {
       <div className="grid lg:grid-cols-3 gap-4">
         <div className="lg:col-span-2">
           {/* Mission Statement */}
-          <div className=''>
+          <div className='py-8'>
             <h4 className='mt-8'>Our Mission</h4>
             <p>
             Inspiring young people in the Scottish Highlands by offering exciting learning adventures in Japan. 
             We aim to spark innovative thinking, and encourage a global perspective by focusing on science and technology.
             </p>
           </div>
-          <div>
+          <h4 className='mb-4'>Press Releases</h4>
+          <div className='grid grid-cols-2 gap-8 mb-8'>
+            
             {pressReleases.map((pressRelease) => {
               return (
                 <Card
+                className='col-span-1'
                   key={pressRelease._id} >
                     <CardHeader>
                       <CardTitle>{pressRelease.title}</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p>{pressRelease.excerpt}</p>
-                      <Button href={`/press/${pressRelease.slug}`}>Read More</Button>
+                      <p className='mb-4'>{pressRelease.excerpt}</p>
+                      <a href={`/press/${pressRelease.slug}`}>Read More</a>
                     </CardContent>
                 </Card>
               )
@@ -52,26 +58,37 @@ export default function PressPage() {
             )}
           </div>
         </div>
-        <div>
-          <p>Contact details</p>
+        <div className='p-8'>
           {/* Social Media */}
           {/* Images */}
+          <Card className="bg-primary-dark">
+            <CardHeader>
+              <CardTitle>Useful Links</CardTitle>
+              <CardDescription>Read More or get in touch.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid w-full items-center gap-4">
+                <div className="flex flex-col space-y-1.5">
+                  <Label htmlFor="name">Our Mission</Label>
+                  <Link href="/documents/mission.pdf"
+                    className={buttonVariants({ variant: 'outline' })}>
+                      Download
+                    
+                  </Link>
+                </div>
+                <div className="flex flex-col space-y-1.5">
+                  <Label htmlFor="name">Contact Us</Label>
+                  <Link href="/contact"
+                    className={buttonVariants({ variant: 'outline' })} >
+                    Contact Us
+                  </Link>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
-      <div className="w-full">
-      NOTES TO EDITORS
-For more information about the project name, please contact: Rob Fraser (email) or call 07727777494.
-Learn in Japan is a start-up  organisation, working in partnership with Highland Council to provide world-leading educational opportunities for high school aged students.
-About the Turing Scheme
-The Turing Scheme is the UK government’s global programme to study and work abroad. The scheme provides funding for international opportunities in education and training across the world. Funding is open to UK and British Overseas Territories organisations from across the education and training sector through higher education, further or vocational education and training, and schools’ projects. Eligible organisations can apply for funding through the Turing Scheme for projects that offer the opportunity to study or gain work experience abroad.
-The scheme is delivered by a consortium of the British Council and Ecorys UK. 
-For more information: 
-
-Website: 	www.turing-scheme.org.uk
-Twitter:	https://twitter.com/TuringScheme_UK 
-Facebook:	www.facebook.com/TuringSchemeUK 
-        {/* Download Documents */}
-      </div>
+      <EditorNotes />
     </section>
   )
 }
