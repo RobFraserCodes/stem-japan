@@ -21,6 +21,15 @@ export function SiteHeader() {
         <MainNav items={siteConfig.mainNav} />
         <div className="flex flex-1 items-center justify-end space-x-4">
           <nav className="flex items-center space-x-1">
+            <Link href={siteConfig.links.apply} target="_blank" rel="noreferrer">
+              <div
+                className={buttonVariants({
+                  size: "sm",
+                })}
+              >
+                Apply
+              </div>
+            </Link>
             <Link href={siteConfig.links.press} target="_blank" rel="noreferrer">
               <div
                 className={buttonVariants({

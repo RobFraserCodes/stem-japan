@@ -1,25 +1,24 @@
-'use client';
-
-import React, { useState, useEffect } from 'react';
 import { client } from '@/lib/sanity';
 import PageTitle from '@/components/page-title';
 import Image from 'next/image';
 import NewsletterSignup from '@/components/newsletter-signup';
+import { BlogPost } from '@/types/blogPosts';
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
 
+const blogPosts = await client.fetch(
+  `*[_type == "post"] | order(publishedAt desc) {
+    _id,
+    title,
+    slug,
+    publishedAt,
+    mainImage,
+    body
+  }`
+);
+
 export default function BlogPage() {
-  const [posts, setPosts] = useState([]);
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      const posts = await client.fetch('*[_type == "post"]');
-      setPosts(posts);
-    };
-
-    fetchPosts();
-  }, []);
 
   return (
     <>
@@ -27,7 +26,7 @@ export default function BlogPage() {
       <PageTitle />
       <h4>Stay up to date with the latest news.</h4>
       <div className="my-16 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-        {posts.map((post) => {
+        {blogPosts.map((post) => {
             const imageUrl = post.mainImage.asset._ref
             .replace('image-', '')
             .replace('-jpg', '.jpg');
@@ -47,21 +46,6 @@ export default function BlogPage() {
                     loading="lazy"
                   />
                 </div>
-                {/* <div className="flex items-center mt-2 pt-3 ml-4 mr-2">
-                  <div className="flex-none w-10 h-10 rounded-full">
-                    <Image
-                      src={author.authorImage.asset.url}
-                      alt={author.authorImage.alt}
-                      width={40}
-                      height={40}
-                      className="rounded-full"
-                    />
-                  </div>
-                  <div className="ml-3">
-                    <span className="block text-gray-900">{post.authorName}</span>
-                    <span className="block text-gray-400 text-sm">{post.date}</span>
-                  </div>
-                </div> */}
                 <div className="pt-3 ml-4 mr-2 mb-3 space-y-4">
                   <h3 className="text-xl text-gray-900">{post.title}</h3>
                   <p className="text-gray-400 text-sm mt-1">{post.excerpt}</p>
